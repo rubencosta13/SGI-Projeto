@@ -82,7 +82,7 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
             );
           }
         });
-        console.log({ originalMaterials });
+        // console.log({ originalMaterials });
         onLoaded?.();
 
         // Animation system
@@ -104,14 +104,13 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
         const dustCoverMesh: Mesh | null = model.getObjectByName(
           "DustCover"
         ) as Mesh;
-        const baseMesh: Mesh | null = model.getObjectByName("Base") as Mesh;
         if (dustCoverMesh) hdriSystem.applyToMesh(dustCoverMesh, envMap, 1.2);
 
         // Shadows
-        const shadowSystem = createShadowSystem(renderer, scene);
-        shadowSystem.enableShadows([dustCoverMesh, baseMesh]);
+        // const shadowSystem = createShadowSystem(renderer, scene);
+        // shadowSystem.enableShadows([dustCoverMesh, baseMesh]);
       } catch (err) {
-        console.error("Error loading GLTF scene:", err);
+        // console.error("Error loading GLTF scene:", err);
       }
     };
 
@@ -139,7 +138,7 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
 
   return (
     <div
-      className="flex flex-col shadow-md mx-auto rounded-lg w-full overflow-hidden"
+      className="flex flex-col mx-auto rounded-lg w-full overflow-hidden"
       style={{ height: "100%" }}
     >
       <div className="relative flex-1">

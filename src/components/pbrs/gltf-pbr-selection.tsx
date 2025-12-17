@@ -1,13 +1,7 @@
-import { applyPBRVariant } from "@/src/pbr/swap-material";
 import { CollapsibleSection } from "../common/selector";
 import { PBRImagePicker } from "./pbr-selector";
-import {
-  ComponentPBRMapping,
-  originalMaterials,
-  PBR_SETS,
-} from "@/src/pbr/types";
-import { Mesh } from "three";
-import { useMemo } from "react";
+import { ComponentPBRMapping } from "@/src/pbr/types";
+
 import { useSceneStore } from "@/src/store/scene";
 
 type Props = {
@@ -15,8 +9,6 @@ type Props = {
 };
 
 export function GLTFPBRSection({ component }: Props) {
-  // Resolve mesh ONCE per render
-
   return (
     <CollapsibleSection
       title={component.display}

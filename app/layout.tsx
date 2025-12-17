@@ -19,14 +19,14 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body>
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col">
           <div className="flex lg:flex-row flex-col lg:justify-end gap-4 shadow-sm border-gray-200 border-b w-full h-full">
             <div className="flex-1">
               <Banner>
                 <NovidadesModaMulher />
               </Banner>
             </div>
-            <div className="hidden lg:flex flex-shrink-0 px-8">
+            <div className="hidden lg:flex px-8 shrink-0">
               <ObterApp />
             </div>
           </div>

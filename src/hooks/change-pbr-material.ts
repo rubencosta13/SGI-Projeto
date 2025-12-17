@@ -47,7 +47,7 @@ export function usePBR() {
 
       mesh.material = newMaterials;
     } else {
-      applyPBRVariantInternal(mesh, pbrSet, variantIndex);
+      // applyPBRVariantInternal(mesh, pbrSet, variantIndex);
     }
   };
 

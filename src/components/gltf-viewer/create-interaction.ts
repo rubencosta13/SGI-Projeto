@@ -16,35 +16,29 @@ export function createInteraction(
   const mouse = new Vector2();
 
   function onClick(event: MouseEvent) {
-    console.log("Click event:", event);
-
     const rect = domElement.getBoundingClientRect();
 
     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    console.log("Normalized mouse coordinates:", mouse);
-
     raycaster.setFromCamera(mouse, camera);
 
     const hits = raycaster.intersectObjects(scene.children, true);
-    console.log("Raycaster hits:", hits);
 
     if (!hits.length) {
-      console.log("No objects hit by raycaster");
       return;
     }
 
     let obj: Object3D | null = hits[0].object;
-    console.log("Initial hit object:", obj.name);
+    // console.log("Initial hit object:", obj.name);
 
     while (obj) {
-      console.log("Checking object:", obj.name);
+      // console.log("Checking object:", obj.name);
 
       const binding = bindings.find((b) => b.object === obj!.name);
 
       if (binding) {
-        console.log("Found binding:", binding);
+        // console.log("Found binding:", binding);
         animationSystem.toggle(binding.animation);
         return;
       }
@@ -52,7 +46,7 @@ export function createInteraction(
       obj = obj.parent;
     }
 
-    console.log("No matching binding found in object hierarchy");
+    // console.log("No matching binding found in object hierarchy");
   }
 
   domElement.addEventListener("click", onClick);
@@ -60,7 +54,7 @@ export function createInteraction(
   return {
     dispose() {
       domElement.removeEventListener("click", onClick);
-      console.log("Interaction disposed");
+      // console.log("Interaction disposed");
     },
   };
 }

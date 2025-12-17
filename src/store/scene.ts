@@ -13,12 +13,12 @@ export const useSceneStore = create<SceneStore>((set, get) => ({
   getMeshByName: (name) => {
     const model = get().model;
     if (!model) {
-      console.log(`Model not found`);
+      // console.log(`Model not found`);
       return undefined;
     }
     const mesh = model.getObjectByName(name);
     if (mesh && (mesh as Mesh).isMesh) return mesh as Mesh;
-    console.log("failed fetching mesh");
+    // console.log("failed fetching mesh");
     return undefined;
   },
 }));

@@ -41,7 +41,7 @@ export function PBRImagePicker({ sets, name, getMesh }: PBRImagePickerProps) {
 
     const originalMaterial = originalMaterials.get(name);
     if (!originalMaterial) {
-      console.warn(`[PBR] No original material found for mesh: ${name}`);
+      // console.warn(`[PBR] No original material found for mesh: ${name}`);
       return;
     }
 
@@ -81,7 +81,7 @@ export function PBRImagePicker({ sets, name, getMesh }: PBRImagePickerProps) {
             key={setName}
             type="button"
             onClick={() => {
-              console.log("APPLY PBR ", { setName });
+              // console.log("APPLY PBR ", { setName });
               applySet(setName);
             }}
             className="relative disabled:opacity-50 border rounded hover:ring-2 hover:ring-blue-500 w-16 h-16 overflow-hidden transition"

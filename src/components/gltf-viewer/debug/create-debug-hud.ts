@@ -92,7 +92,7 @@ z: ${controls.target.z.toFixed(2)}`
       }),
     };
 
-    console.log("Camera Debug Info:", data);
+    // console.log("Camera Debug Info:", data);
   };
 
   return {

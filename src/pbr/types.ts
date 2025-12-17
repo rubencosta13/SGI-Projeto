@@ -5,6 +5,7 @@ export type PBRSet = {
   normal: string[];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const originalMaterials = new Map<string, any>();
 
 export const PBR_SETS: Record<string, PBRSet> = {
@@ -47,8 +48,11 @@ export const PBR_SETS: Record<string, PBRSet> = {
 };
 
 export type ComponentPBRMapping = {
+  /** Mesh name to apply the pbr */
   mesh: string;
+  /** Display name for the mesh */
   display: string;
+  /** Available PBRS to apply to the specific mesh */
   pbrs: Array<keyof typeof PBR_SETS>;
 };
 
@@ -67,5 +71,10 @@ export const COMPONENT_PBRS: ComponentPBRMapping[] = [
     mesh: "BlackMattePlastic",
     display: "Arm",
     pbrs: ["metal"],
+  },
+  {
+    mesh: "Feet",
+    display: "Feet",
+    pbrs: ["metal", "granite"],
   },
 ];

@@ -22,7 +22,7 @@ export type PBRSwapOptions = {
   normalScale?: number;
   metalness?: number;
   roughness?: number;
-  debug?: boolean; // NEW: enable logging
+  debug?: boolean; // enable logging
 };
 
 export async function applyPBRVariant(
@@ -33,12 +33,8 @@ export async function applyPBRVariant(
   const debug = options.debug ?? false;
 
   if (!mesh) {
-    if (debug) console.warn("[PBR] Mesh is undefined, cannot apply variant");
     return;
   }
-
-  if (debug)
-    console.log(`[PBR] Applying variant '${setName}' to mesh:`, mesh.name);
 
   const set = PBR_SETS[setName];
   const variant = options.baseColor ?? 0;
@@ -49,31 +45,20 @@ export async function applyPBRVariant(
     const geometry = mesh.geometry as BufferGeometry;
     geometry.computeBoundingBox();
 
-    if (!geometry.boundingBox) {
-      if (debug) console.warn(`[PBR] Mesh ${mesh.name} has no bounding box`);
-    } else {
+    if (geometry.boundingBox) {
       const size = new Vector3();
       geometry.boundingBox.getSize(size);
+
       const texelDensity = options.texelDensity ?? 0.5;
       const worldSize = Math.max(size.x, size.y, size.z);
-      repeat = worldSize / texelDensity;
 
-      if (debug)
-        console.log(
-          `[PBR] Computed repeat for mesh ${mesh.name}:`,
-          repeat,
-          "worldSize:",
-          worldSize,
-          "texelDensity:",
-          texelDensity
-        );
+      repeat = worldSize / texelDensity;
     }
   }
 
   const load = (path?: string) =>
     path
       ? new Promise<Texture>((resolve) => {
-          if (debug) console.log(`[PBR] Loading texture: ${path}`);
           textureLoader.load(path, (tex) => resolve(tex));
         })
       : Promise.resolve(null);
@@ -85,34 +70,29 @@ export async function applyPBRVariant(
     load(set.metalness?.[0]),
   ]);
 
-  if (debug)
-    console.log(`[PBR] Textures loaded for mesh ${mesh.name}:`, {
-      albedo,
-      normal,
-      roughness,
-      metalness,
-    });
-
   const allTextures = [albedo, normal, roughness, metalness];
 
   for (const tex of allTextures) {
     if (!tex) continue;
-    tex.wrapS = tex.wrapT = RepeatWrapping;
+
+    tex.wrapS = RepeatWrapping;
+    tex.wrapT = RepeatWrapping;
     tex.repeat.set(repeat, repeat);
-    if (options.anisotropy) tex.anisotropy = options.anisotropy;
+
+    if (options.anisotropy) {
+      tex.anisotropy = options.anisotropy;
+    }
   }
 
-  // Correct color spaces
+  // Color spaces
   if (albedo) albedo.colorSpace = SRGBColorSpace;
   if (normal) normal.colorSpace = LinearSRGBColorSpace;
   if (roughness) roughness.colorSpace = LinearSRGBColorSpace;
   if (metalness) metalness.colorSpace = LinearSRGBColorSpace;
 
   // Dispose previous material safely
-  if (mesh.material && mesh.material instanceof MeshStandardMaterial) {
+  if (mesh.material instanceof MeshStandardMaterial) {
     mesh.material.dispose();
-    if (debug)
-      console.log(`[PBR] Disposed previous material for mesh ${mesh.name}`);
   }
 
   const material = new MeshStandardMaterial({
@@ -135,7 +115,4 @@ export async function applyPBRVariant(
   material.needsUpdate = true;
 
   mesh.material = material;
-
-  if (debug)
-    console.log(`[PBR] Applied material to mesh ${mesh.name}:`, material);
 }
