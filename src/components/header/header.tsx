@@ -11,13 +11,16 @@ import { User, Heart, ShoppingBag, MenuIcon } from "lucide-react";
 const HeaderRow1 = () => {
   return (
     <div className="flex justify-between items-center w-full">
-      <div className="flex flex-1 lg:flex-none items-center gap-3">
-        <Link className="lg:hidden block" href="/">
+      {/* LEFT */}
+      <div className="flex items-center gap-3">
+        {/* Mobile logo */}
+        <Link href="/" className="lg:hidden shrink-0">
           <Logo width={48} height={48} />
         </Link>
 
+        {/* Desktop nav */}
         <NavLinks
-          className="flex items-center gap-3 mr-6"
+          className="flex items-center"
           links={[
             { href: "/", label: "Casa" },
             { href: "/moda", label: "Moda" },
@@ -25,11 +28,13 @@ const HeaderRow1 = () => {
         />
       </div>
 
-      <div className="hidden lg:flex flex-1 justify-center mx-4">
+      {/* CENTER (desktop only) */}
+      <div className="hidden lg:flex flex-1 justify-center px-6">
         <SearchInput />
       </div>
 
-      <div className="flex items-center gap-4 ml-6">
+      {/* RIGHT */}
+      <div className="flex items-center gap-4">
         <IconButton
           icon={User}
           width={32}
@@ -47,21 +52,16 @@ const HeaderRow1 = () => {
 
 const HeaderRow2 = () => {
   return (
-    <div className="flex items-center ml-4">
-      <IconButton className="lg:hidden flex" icon={MenuIcon} />
+    <div className="flex items-center gap-3 w-full">
+      {/* Menu button */}
+      <IconButton className="lg:hidden" icon={MenuIcon} />
 
-      <IconButton
-        className="hidden lg:flex pl-2"
-        icon={MenuIcon}
-        iconClassName="text-black-500"
-        label="MENU"
-      />
+      <IconButton className="hidden lg:flex" icon={MenuIcon} label="MENU" />
 
+      {/* Desktop categories */}
       <NavLinks
-        className="hidden lg:flex gap-4 p-2 w-full"
-        linksClassName={
-          "text-base px-4 py-2 rounded-full hover:bg-gray-200 transition-colors"
-        }
+        className="hidden lg:flex flex-1 gap-4 ml-4"
+        linksClassName="text-base px-4 py-2 rounded-full hover:bg-gray-200 transition"
         links={[
           { href: "/", label: "Novidades" },
           { href: "/moda", label: "Les Irresistibles" },
@@ -71,81 +71,83 @@ const HeaderRow2 = () => {
         ]}
       />
 
-      <SearchInput className="lg:hidden" />
+      {/* Mobile search */}
+      <SearchInput className="lg:hidden flex-1" />
     </div>
   );
 };
+
+/* ---------------- HEADER ---------------- */
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header
-      className={`flex  top-0 left-0 flex-col w-full z-50 transition-all duration-300 ${
-        scrolled && "bg-transparent"
-      }`}
-    >
-      <div className="flex flex-row justify-between items-center px-4 py-2">
-        <Link className="hidden lg:block" href="/">
-          <Logo />
-        </Link>
+    <>
+      {/* NORMAL HEADER */}
+      <header className="z-40 relative w-full">
+        <div className="flex items-center gap-4 px-4 py-2">
+          {/* Desktop logo */}
+          <Link href="/" className="hidden lg:block shrink-0">
+            <Logo />
+          </Link>
 
-        <div className="flex flex-col w-full">
-          <HeaderRow1 />
-          <HeaderRow2 />
+          <div className="flex flex-col gap-2 w-full">
+            <HeaderRow1 />
+            <HeaderRow2 />
+          </div>
         </div>
-      </div>
+      </header>
 
+      {/* SCROLLED HEADER */}
       {scrolled && (
         <div className="top-0 left-0 z-50 fixed bg-white shadow-md w-full">
-          <div className="flex justify-between items-center px-4 py-2">
-            {/* Logo: only visible on lg+ */}
-            <div className="hidden lg:block">
+          <div className="flex items-center gap-4 px-4 py-2">
+            {/* Desktop logo */}
+            <div className="hidden lg:block shrink-0">
               <Logo width={40} height={40} />
             </div>
 
-            {/* Menu Button */}
+            {/* Mobile menu */}
             <IconButton
-              label=""
-              className="lg:hidden flex ml-6"
+              className="lg:hidden"
               icon={MenuIcon}
               width={24}
               height={24}
             />
 
+            {/* Desktop menu */}
             <IconButton
-              className="hidden lg:flex bg-[#12151b] pl-0 text-white"
+              className="hidden lg:flex bg-[#12151b] text-white"
               icon={MenuIcon}
               iconClassName="text-white"
               label="MENU"
               labelClassName="text-white"
             />
 
-            {/* Search Bar */}
-            <div className="flex-1 mx-4">
-              <SearchInput iconHeight={24} iconWidth={24} />
+            {/* Search */}
+            <div className="flex-1 px-4">
+              <SearchInput iconWidth={24} iconHeight={24} />
             </div>
 
             {/* Icons */}
             <div className="flex items-center gap-4">
-              <IconButton icon={User} height={24} width={24} />
-              {/* Heart: only visible on lg+ */}
+              <IconButton icon={User} width={24} height={24} />
               <div className="hidden lg:block">
-                <IconButton icon={Heart} height={24} width={24} />
+                <IconButton icon={Heart} width={24} height={24} />
               </div>
-              <IconButton icon={ShoppingBag} height={24} width={24} />
+              <IconButton icon={ShoppingBag} width={24} height={24} />
             </div>
           </div>
         </div>
       )}
-      {/* {scrolled && <div className='h-10' />} */}
-    </header>
+    </>
   );
 };
 

@@ -31,6 +31,7 @@ export function ImageGallery({ items, className }: ImageGalleryProps) {
   const handleKey = useCallback((e: KeyboardEvent) => {
     if (e.key === "ArrowLeft") prev();
     if (e.key === "ArrowRight") next();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -79,7 +80,7 @@ export function ImageGallery({ items, className }: ImageGalleryProps) {
         disabled={index === 0}
         className="top-1/2 left-2 absolute bg-black/50 hover:bg-black/70 disabled:opacity-30 p-3 rounded-full transition-colors -translate-y-1/2"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={24} color="white" />
       </button>
 
       <button
@@ -87,7 +88,7 @@ export function ImageGallery({ items, className }: ImageGalleryProps) {
         disabled={index === items.length - 1}
         className="top-1/2 right-2 absolute bg-black/50 hover:bg-black/70 disabled:opacity-30 p-3 rounded-full transition-colors -translate-y-1/2"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={24} color="white" />
       </button>
 
       {/* Dots */}

@@ -56,9 +56,8 @@ const ProductPage = () => {
 
   return (
     <div className="mx-auto px-4 py-6 container">
-      <div className="gap-6 lg:gap-8 grid grid-cols-1 md:grid-cols-2">
-        {/* GLTF Viewer */}
-        <div className="w-full md:h-full aspect-auto">
+      <div className="gap-6 lg:gap-8 grid grid-cols-1 md:grid-cols-2 md:h-[70vh]">
+        <div className="relative w-full md:h-full aspect-square md:aspect-auto">
           <ImageGallery
             items={[
               { type: "image", src: "/renders/render2.png" },
