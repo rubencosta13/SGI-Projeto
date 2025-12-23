@@ -1,94 +1,91 @@
-"use client";
-
+import * as THREE from "three";
 import { useCallback } from "react";
-import type { Mesh, Material } from "three";
 import Image from "next/image";
 import { XCircleIcon } from "lucide-react";
-
 import { originalMaterials, PBR_SETS } from "@/src/pbr/types";
 import { applyPBRVariant } from "@/src/pbr/swap-material";
 
-export type PBRSetName = keyof typeof PBR_SETS;
-
 export interface PBRImagePickerProps {
-  sets: readonly PBRSetName[];
+  sets?: readonly (keyof typeof PBR_SETS)[]; // PBR sets (optional)
+  materials?: Record<string, THREE.MeshPhysicalMaterial>; // predefined physical materials
   name: string;
-  getMesh: () => Mesh | undefined; // <-- get mesh dynamically
+  getMesh: () => THREE.Mesh | undefined;
 }
 
-/* ---------------- helpers ---------------- */
-
-function disposeMaterial(material: Material | Material[]) {
-  if (Array.isArray(material)) {
-    material.forEach((m) => m.dispose());
-  } else {
-    material.dispose();
-  }
+function disposeMaterial(material: THREE.Material | THREE.Material[]) {
+  if (Array.isArray(material)) material.forEach((m) => m.dispose());
+  else material.dispose();
 }
 
-function markMaterialForUpdate(material: Material | Material[]) {
-  if (Array.isArray(material)) {
-    material.forEach((m) => (m.needsUpdate = true));
-  } else {
-    material.needsUpdate = true;
-  }
+function markMaterialForUpdate(material: THREE.Material | THREE.Material[]) {
+  if (Array.isArray(material)) material.forEach((m) => (m.needsUpdate = true));
+  else material.needsUpdate = true;
 }
 
-export function PBRImagePicker({ sets, name, getMesh }: PBRImagePickerProps) {
+export function PBRImagePicker({
+  sets = [],
+  materials,
+  name,
+  getMesh,
+}: PBRImagePickerProps) {
   const resetMaterial = useCallback(() => {
     const mesh = getMesh();
     if (!mesh) return;
-
     const originalMaterial = originalMaterials.get(name);
-    if (!originalMaterial) {
-      // console.warn(`[PBR] No original material found for mesh: ${name}`);
-      return;
-    }
-
+    if (!originalMaterial) return;
     if (mesh.material) disposeMaterial(mesh.material);
-
     mesh.material = originalMaterial;
     markMaterialForUpdate(mesh.material);
   }, [getMesh, name]);
 
-  const applySet = async (setName: PBRSetName) => {
-    const mesh = getMesh();
-    if (!mesh) return;
+  const applyPBRSet = useCallback(
+    async (setName: keyof typeof PBR_SETS) => {
+      const mesh = getMesh();
+      if (!mesh) return;
+      // your existing applyPBRVariant logic
+      await applyPBRVariant(mesh, setName, {
+        debug: process.env.NODE_ENV === "development",
+      });
+    },
+    [getMesh]
+  );
 
-    await applyPBRVariant(mesh, setName, {
-      debug: process.env.NODE_ENV === "development",
-    });
-  };
+  const applyPhysicalMaterial = useCallback(
+    (key: string) => {
+      const mesh = getMesh();
+      if (!mesh || !materials) return;
+      if (mesh.material) disposeMaterial(mesh.material);
+      mesh.material = materials[key];
+      markMaterialForUpdate(mesh.material);
+    },
+    [getMesh, materials]
+  );
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {/* Reset */}
+    <div className="flex flex-wrap gap-2 w-full">
+      {/* Reset button */}
       <button
         type="button"
         onClick={resetMaterial}
         aria-label="Reset material"
-        className="flex justify-center items-center bg-gray-100 hover:bg-gray-200 disabled:opacity-50 border rounded w-16 h-16 transition"
+        className="flex justify-center items-center bg-gray-100 hover:bg-gray-200 border rounded w-16 h-16 transition"
       >
         <XCircleIcon className="w-8 h-8 text-red-600" />
       </button>
 
-      {/* One button per PBR set (no variants) */}
+      {/* Render PBR sets if available */}
       {sets.map((setName) => {
         const set = PBR_SETS[setName];
-
         return (
           <button
             key={setName}
             type="button"
-            onClick={() => {
-              // console.log("APPLY PBR ", { setName });
-              applySet(setName);
-            }}
-            className="relative disabled:opacity-50 border rounded hover:ring-2 hover:ring-blue-500 w-16 h-16 overflow-hidden transition"
+            onClick={() => applyPBRSet(setName)}
+            className="relative border rounded hover:ring-2 hover:ring-blue-500 w-16 h-16 overflow-hidden transition"
             aria-label={`Apply ${setName} material`}
           >
             <Image
-              src={set.albedo[0]} // preview only
+              src={set.albedo[0]}
               alt={setName}
               fill
               sizes="64px"
@@ -97,6 +94,26 @@ export function PBRImagePicker({ sets, name, getMesh }: PBRImagePickerProps) {
           </button>
         );
       })}
+
+      {/* Render predefined physical materials if available */}
+      {materials &&
+        Object.entries(materials).map(([key, mat]) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => applyPhysicalMaterial(key)}
+            className="relative border rounded w-16 h-16 overflow-hidden transition"
+            aria-label={`Apply ${key} material`}
+          >
+            <div
+              style={{
+                backgroundColor: `#${mat.color.getHexString()}`,
+                width: "100%",
+                height: "100%",
+              }}
+            />
+          </button>
+        ))}
     </div>
   );
 }

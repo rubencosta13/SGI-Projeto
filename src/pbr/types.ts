@@ -1,3 +1,5 @@
+import { MeshPhysicalMaterial } from "three";
+
 export type PBRSet = {
   albedo: string[];
   metalness: string[];
@@ -15,6 +17,12 @@ export const PBR_SETS: Record<string, PBRSet> = {
     roughness: ["/pbr/granite/granitesmooth1-roughness3.png"],
     normal: ["/pbr/granite/granitesmooth1-normal2.png"],
   },
+  glass: {
+    albedo: ["/pbr/glass/Glass_Frosted_002_basecolor.png"],
+    metalness: [""],
+    normal: ["/pbr/glass/Glass_Frosted_002_normal.png"],
+    roughness: ["/pbr/glass/Glass_Frosted_002_roughness.png"],
+  },
   oak: {
     albedo: ["/pbr/oak/oak-wood-bare_albedo.png"],
     metalness: ["/pbr/oak/oak-wood-bare_metallic.png"],
@@ -26,12 +34,6 @@ export const PBR_SETS: Record<string, PBRSet> = {
     normal: ["/pbr/wood/WoodFloor064_1K-JPG_NormalGL.jpg"],
     roughness: ["/pbr/wood/WoodFloor064_1K-JPG_Roughness.jpg"],
     metalness: [""],
-  },
-  facade: {
-    albedo: ["/pbr/facade/Facade005_1K-JPG_Color.jpg"],
-    normal: ["/pbr/facade/Facade005_1K-JPG_NormalGL.jpg"],
-    roughness: ["/pbr/facade/Facade005_1K-JPG_Roughness.jpg"],
-    metalness: ["/pbr/facade/Facade005_1K-JPG_Metalness.jpg"],
   },
   metal: {
     albedo: ["/pbr/metal/Metal032_1K-JPG_Color.jpg"],
@@ -53,14 +55,43 @@ export type ComponentPBRMapping = {
   /** Display name for the mesh */
   display: string;
   /** Available PBRS to apply to the specific mesh */
-  pbrs: Array<keyof typeof PBR_SETS>;
+  pbrs?: Array<keyof typeof PBR_SETS>;
+
+  physicalMaterialOnly?: boolean;
+  materials?: Record<string, MeshPhysicalMaterial>;
+};
+
+export const DUSTCOVER_MATERIALS: Record<string, MeshPhysicalMaterial> = {
+  greenTint: new MeshPhysicalMaterial({
+    color: 0x88ff88,
+    metalness: 0,
+    roughness: 0,
+    transparent: true,
+    opacity: 0.25,
+    transmission: 0.9,
+    clearcoat: 1,
+    clearcoatRoughness: 0,
+    reflectivity: 0.5,
+  }),
+  redTint: new MeshPhysicalMaterial({
+    color: 0xff8888,
+    metalness: 0,
+    roughness: 0.2,
+    transparent: true,
+    opacity: 0.3,
+    transmission: 0.8,
+    clearcoat: 0.8,
+    clearcoatRoughness: 0.1,
+    reflectivity: 0.6,
+  }),
 };
 
 export const COMPONENT_PBRS: ComponentPBRMapping[] = [
   {
     mesh: "DustCover",
     display: "Dust Cover",
-    pbrs: ["fabric"],
+    materials: DUSTCOVER_MATERIALS,
+    physicalMaterialOnly: true,
   },
   {
     mesh: "Base",

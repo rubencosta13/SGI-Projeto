@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
@@ -10,6 +10,7 @@ type GalleryItem =
       type: "image";
       src: string;
       alt?: string;
+      caption?: string;
     }
   | {
       type: "canvas";
@@ -27,59 +28,85 @@ export function ImageGallery({ items, className }: ImageGalleryProps) {
   const prev = () => setIndex((i) => Math.max(0, i - 1));
   const next = () => setIndex((i) => Math.min(items.length - 1, i + 1));
 
+  const handleKey = useCallback((e: KeyboardEvent) => {
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [handleKey]);
+
   const item = items[index];
 
   return (
-    <div className={clsx("relative w-full h-full", className)}>
+    <div
+      className={clsx(
+        "relative bg-gray-900/5 rounded-lg w-full h-full overflow-hidden",
+        className
+      )}
+    >
       {/* Content */}
-      <div className="relative bg-black rounded-lg w-full h-full overflow-hidden">
+      <div className="relative w-full h-full">
         {item.type === "image" && (
-          <Image
-            src={item.src}
-            alt={item.alt ?? ""}
-            fill
-            priority
-            sizes="100vw"
-            className="object-contain"
-          />
+          <div className="transition-opacity duration-500 ease-in-out">
+            <Image
+              src={item.src}
+              alt={item.alt ?? ""}
+              fill
+              className="object-contain"
+              priority
+              sizes="100vw"
+            />
+            {item.caption && (
+              <div className="bottom-4 left-1/2 absolute px-3 py-1 rounded text-white text-sm -translate-x-1/2">
+                {item.caption}
+              </div>
+            )}
+          </div>
         )}
-
         {item.type === "canvas" && (
-          <div className="absolute inset-0">{item.render()}</div>
+          <div className="absolute inset-0 transition-opacity duration-500">
+            {item.render()}
+          </div>
         )}
       </div>
 
-      {/* Left button */}
+      {/* Navigation Buttons */}
       <button
         onClick={prev}
         disabled={index === 0}
-        className="top-1/2 left-2 absolute bg-black/60 hover:bg-black disabled:opacity-30 p-2 rounded-full text-white -translate-y-1/2"
+        className="top-1/2 left-2 absolute bg-black/50 hover:bg-black/70 disabled:opacity-30 p-3 rounded-full transition-colors -translate-y-1/2"
       >
-        <ChevronLeft />
+        <ChevronLeft size={24} />
       </button>
 
-      {/* Right button */}
       <button
         onClick={next}
         disabled={index === items.length - 1}
-        className="top-1/2 right-2 absolute bg-black/60 hover:bg-black disabled:opacity-30 p-2 rounded-full text-white -translate-y-1/2"
+        className="top-1/2 right-2 absolute bg-black/50 hover:bg-black/70 disabled:opacity-30 p-3 rounded-full transition-colors -translate-y-1/2"
       >
-        <ChevronRight />
+        <ChevronRight size={24} />
       </button>
 
       {/* Dots */}
-      <div className="bottom-2 left-1/2 absolute flex gap-2 -translate-x-1/2">
-        {items.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            className={clsx(
-              "rounded-full w-2 h-2",
-              i === index ? "bg-white" : "bg-white/40"
-            )}
-          />
-        ))}
-      </div>
+      {index !== items.length - 1 && (
+        <div className="bottom-4 left-1/2 absolute flex gap-2 -translate-x-1/2">
+          {items.slice(0, -1).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className={clsx(
+                "rounded-full w-3 h-3 transition-all",
+                i === index
+                  ? "bg-white scale-125"
+                  : "bg-white/40 hover:bg-white/70 scale-100"
+              )}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

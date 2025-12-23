@@ -12,12 +12,17 @@ export function GLTFPBRSection({ component }: Props) {
   return (
     <CollapsibleSection
       title={component.display}
-      info={`${component.pbrs.length} Options`}
+      info={
+        component.physicalMaterialOnly
+          ? Object.keys(component.materials || {}).length + " Options"
+          : `${component.pbrs?.length || 0} Options`
+      }
     >
       <PBRImagePicker
         getMesh={() => useSceneStore.getState().getMeshByName(component.mesh)}
         name={component.mesh}
         sets={component.pbrs}
+        materials={component.materials}
       />
     </CollapsibleSection>
   );

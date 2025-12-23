@@ -1,0 +1,15 @@
+services:
+  sgi:
+    container_name: sgi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - safe_net
+    dns:
+      - 1.1.1.1
+    restart: always
+
+networks:
+  safe_net:
+    external: true
