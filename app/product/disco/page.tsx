@@ -63,6 +63,7 @@ const ProductPage = () => {
               { type: "image", src: "/renders/render2.png" },
               { type: "image", src: "/renders/render1.png" },
               { type: "image", src: "/renders/render3.png" },
+              { type: "image", src: "/renders/render4.png" },
               { type: "image", src: "/renders/bg2.png" },
               {
                 type: "canvas",
