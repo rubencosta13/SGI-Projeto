@@ -3,10 +3,10 @@ FROM oven/bun:1.0.0 AS dependencies
 WORKDIR /home/app
 
 # Copy package files
-COPY package.json bun.lockb ./
+COPY package.json ./
 
-# Install dependencies
-RUN bun install --production=false
+# Install all dependencies (no lockfile needed)
+RUN bun install --no-lockfile --production=false
 
 # --- Builder stage ---
 FROM oven/bun:1.0.0 AS builder
@@ -24,7 +24,7 @@ ENV NODE_ENV="${NODE_ENV}"
 RUN bun run build
 
 # Install only production deps for the runner
-RUN bun install --production --ignore-scripts
+RUN bun install --no-lockfile --production --ignore-scripts
 
 # --- Runner stage ---
 FROM gcr.io/distroless/nodejs22-debian12 AS runner
