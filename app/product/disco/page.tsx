@@ -92,7 +92,58 @@ const ProductPage = () => {
     {
       id: "shipping",
       label: "Envio",
-      content: <p>Informações de envio e prazos de entrega...</p>,
+      content: (
+        <div className="bg-white shadow-md p-6 rounded-lg">
+          <h2 className="mb-4 font-semibold text-amber-900 text-xl">
+            Informações de envio
+          </h2>
+
+          <dl className="gap-x-8 gap-y-3 grid grid-cols-1 sm:grid-cols-2 text-sm">
+            <div className="flex justify-between">
+              <dt className="text-gray-600">Prazo de processamento:</dt>
+              <dd className="font-medium text-gray-900">1–3 dias úteis</dd>
+            </div>
+
+            <div className="flex justify-between">
+              <dt className="text-gray-600">Envio padrão (Continente):</dt>
+              <dd className="font-medium text-gray-900 text-right">
+                2–4 dias úteis
+              </dd>
+            </div>
+
+            <div className="flex justify-between">
+              <dt className="text-gray-600">Envio para Madeira/Açores: </dt>
+              <dd className="font-medium text-gray-900 text-right">
+                5–8 dias úteis
+              </dd>
+            </div>
+
+            <div className="flex justify-between">
+              <dt className="text-gray-600">Portes grátis: </dt>
+              <dd className="font-medium text-gray-900">
+                Em compras acima de 99 €
+              </dd>
+            </div>
+
+            <div className="flex justify-between">
+              <dt className="text-gray-600">Transportadora: </dt>
+              <dd className="font-medium text-gray-900">CTT Expresso ou GLS</dd>
+            </div>
+
+            <div className="flex justify-between">
+              <dt className="text-gray-600">Tracking: </dt>
+              <dd className="font-medium text-gray-900 text-right">
+                Incluído em todos os envios
+              </dd>
+            </div>
+
+            <div className="flex justify-between sm:col-span-2 mt-2 pt-3 border-t">
+              <dt className="text-gray-600">Envio para Europa: </dt>
+              <dd className="font-medium text-gray-900">Sob orçamento</dd>
+            </div>
+          </dl>
+        </div>
+      ),
     },
   ];
 
