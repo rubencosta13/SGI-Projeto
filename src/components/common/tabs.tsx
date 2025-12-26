@@ -18,8 +18,12 @@ export function HorizontalTabs({ tabs, defaultTabId }: Props) {
 
   return (
     <div className="w-full">
-      {/* Tabs */}
-      <div role="tablist" className="flex gap-6 border-gray-200 border-b">
+      {/* Tabs - Scrollable on small screens */}
+      <div
+        role="tablist"
+        className="flex gap-6 -mb-px pb-1 border-gray-200 border-b overflow-x-auto whitespace-nowrap scrollbar-hide"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} // Hide scrollbar (optional)
+      >
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
 
@@ -30,7 +34,7 @@ export function HorizontalTabs({ tabs, defaultTabId }: Props) {
               aria-selected={isActive}
               onClick={() => setActiveTab(tab.id)}
               className={`
-                relative pb-3 text-sm font-medium transition-colors
+                relative pb-3 text-sm font-medium transition-colors shrink-0
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
                 ${
                   isActive
@@ -43,12 +47,19 @@ export function HorizontalTabs({ tabs, defaultTabId }: Props) {
 
               {/* Active underline */}
               {isActive && (
-                <span className="-bottom-px absolute inset-x-0 bg-gray-900 rounded-full h-0.5" />
+                <span className="bottom-0 absolute inset-x-0 bg-gray-900 rounded-full h-0.5" />
               )}
             </button>
           );
         })}
       </div>
+
+      {/* Optional: hide scrollbar cross-browser */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
 
       {/* Content */}
       <div className="mt-6 text-gray-700 text-sm">
