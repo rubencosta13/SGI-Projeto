@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
   compress: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

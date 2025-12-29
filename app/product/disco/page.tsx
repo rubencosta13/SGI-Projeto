@@ -4,12 +4,11 @@ import GLTFViewer from "@/src/components/gltf-viewer/gltf-viewer";
 import Breadcrumbs from "@/src/components/common/breadcrumbs";
 import { HorizontalTabs } from "@/src/components/common/tabs";
 import { ProductHeader } from "@/src/components/products/product-header";
-import { PBRConfigurator } from "@/src/components/products/pbr-configurator";
-import { ServicesList } from "@/src/components/products/services-list";
-import { RelatedProductsGrid } from "@/src/components/products/related-products";
+import { PBRConfigurator } from "@/src/components/pbrs/pbr-configurator";
 import { UserReview } from "@/src/components/products/reviews";
 import { useState } from "react";
 import { ImageGallery } from "@/src/components/image/image-display";
+import ProductCard from "@/src/components/products/product-card";
 
 const ProductPage = () => {
   const tabs = [
@@ -84,7 +83,7 @@ const ProductPage = () => {
             rating={4.5}
             date="2025-12-16"
             reviewText="Produto excelente, qualidade de som muito boa e design elegante. Recomendo!"
-            onHelpfulClick={() => alert("Marked as helpful")}
+            // onHelpfulClick={() => alert("Marked as helpful")}
           />
         </div>
       ),
@@ -147,16 +146,13 @@ const ProductPage = () => {
     },
   ];
 
-  const services = [
-    { label: "Embalagem sustentável" },
-    { label: "Garantia de 2 anos" },
-  ];
-
   const [sceneLoaded, setSceneLoaded] = useState(false);
 
   const relatedProducts = Array.from({ length: 4 }, (_, i) => ({
+    id: i,
     name: `Produto Relacionado ${i + 1}`,
-    price: 299 + i * 50,
+    price: (299 + i * 50).toString(),
+    image: "",
   }));
 
   return (
@@ -204,17 +200,34 @@ const ProductPage = () => {
           <div className="mt-6">
             <HorizontalTabs tabs={tabs} />
           </div>
-
-          <ServicesList services={services} />
         </aside>
       </div>
 
+      {/* Related Products - Full width, below everything */}
       {/* Related Products - Full width, below everything */}
       <section className="mt-12 pt-12 border-t">
         <h2 className="mb-6 font-semibold text-gray-900 text-2xl">
           Também pode gostar
         </h2>
-        <RelatedProductsGrid products={relatedProducts} />
+
+        <div className="flex justify-center">
+          <div className="gap-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full max-w-[1400px]">
+            {relatedProducts.slice(0, 5).map((product, index) => (
+              // eslint-disable-next-line react/jsx-key
+              <div className="w-full">
+                <ProductCard
+                  key={index}
+                  product={{
+                    description: product.name,
+                    title: product.name,
+                    price: product.price,
+                    image: `https://picsum.photos/400/500?random=${index}`, // random images
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </div>
   );
