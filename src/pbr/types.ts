@@ -84,6 +84,28 @@ export const DUSTCOVER_MATERIALS: Record<string, MeshPhysicalMaterial> = {
     clearcoatRoughness: 0.1,
     reflectivity: 0.6,
   }),
+  clearGlass: new MeshPhysicalMaterial({
+    color: 0xffffff, // No tint (pure white)
+    metalness: 0,
+    roughness: 0.2,
+    transparent: true,
+    opacity: 1.0, // Full opacity for proper transmission rendering
+    transmission: 0.95, // High transmission for clear see-through effect
+    clearcoat: 0.8,
+    clearcoatRoughness: 0.1,
+    reflectivity: 0.6,
+  }),
+  blueTint: new MeshPhysicalMaterial({
+    color: 0x88bbff, // Light blue tint (adjust as needed, e.g., 0x88ccff for stronger blue)
+    metalness: 0,
+    roughness: 0.2,
+    transparent: true,
+    opacity: 0.3, // Kept similar to original for subtle surface opacity
+    transmission: 0.8,
+    clearcoat: 0.8,
+    clearcoatRoughness: 0.1,
+    reflectivity: 0.6,
+  }),
 };
 
 export const COMPONENT_PBRS: ComponentPBRMapping[] = [
@@ -106,6 +128,6 @@ export const COMPONENT_PBRS: ComponentPBRMapping[] = [
   {
     mesh: "Feet",
     display: "Feet",
-    pbrs: ["metal", "granite"],
+    pbrs: ["metal", "granite", "oak", "wood"],
   },
 ];

@@ -21,7 +21,21 @@ type GLTFViewerProps = {
   onLoaded?: () => void; // new
 };
 
-const animationBindings = [{ object: "DustCover", animation: "Action" }];
+const animationBindings = [
+  { object: "DustCover", animation: "Action" },
+  {
+    object: "VinylDisk",
+    animation: "VinylDiskAction",
+  },
+  {
+    object: "VinylBase",
+    animation: "VinylDiskAction",
+  },
+  {
+    object: "Cylinder004_1",
+    animation: "PickupAction",
+  },
+];
 
 const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
   const setModel = useSceneStore((state) => state.setModel);

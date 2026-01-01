@@ -213,8 +213,7 @@ const ProductPage = () => {
         <div className="flex justify-center">
           <div className="gap-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full max-w-[1400px]">
             {relatedProducts.slice(0, 5).map((product, index) => (
-              // eslint-disable-next-line react/jsx-key
-              <div className="w-full">
+              <div className="w-full" key={index}>
                 <ProductCard
                   key={index}
                   product={{
