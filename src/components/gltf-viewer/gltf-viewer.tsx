@@ -16,13 +16,14 @@ import { originalMaterials } from "@/src/pbr/types";
 import { useSceneStore } from "@/src/store/scene";
 import { useCameraStore } from "@/src/store/camera";
 import { useControlsStore } from "@/src/store/controls";
+import { createDebugHUD } from "./debug/create-debug-hud";
 
 type GLTFViewerProps = {
   onLoaded?: () => void; // new
 };
 
 const animationBindings = [
-  { object: "DustCover", animation: "Action" },
+  { object: "DustCover", animation: "DustCoverAction" },
   {
     object: "VinylDisk",
     animation: "VinylDiskAction",
@@ -60,6 +61,8 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
 
     let animationSystem: ReturnType<typeof createAnimationSystem> | null = null;
     let interaction: ReturnType<typeof createInteraction> | null = null;
+
+    const { update } = createDebugHUD(camera, controls);
 
     const resize = () => {
       const canvas = canvasRef.current!;
@@ -137,6 +140,7 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
       animationSystem?.update(delta);
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
+      update();
     };
 
     animate();

@@ -47,10 +47,14 @@ export function createDebugHUD(camera: Camera, controls?: OrbitControls) {
   function update() {
     camera.getWorldDirection(forward);
 
+    const distance = controls ? camera.position.distanceTo(controls.target) : 0;
+
     el.textContent = `Camera position:
 x: ${camera.position.x.toFixed(2)}
 y: ${camera.position.y.toFixed(2)}
 z: ${camera.position.z.toFixed(2)}
+
+Distance to target: ${distance.toFixed(2)}
 
 Facing direction:
 x: ${forward.x.toFixed(2)}
@@ -62,7 +66,13 @@ ${
 Target:
 x: ${controls.target.x.toFixed(2)}
 y: ${controls.target.y.toFixed(2)}
-z: ${controls.target.z.toFixed(2)}`
+z: ${controls.target.z.toFixed(2)}
+
+Current limits:
+minDistance: ${controls.minDistance}
+maxDistance: ${controls.maxDistance}
+minPolarAngle: ${((controls.minPolarAngle * 180) / Math.PI).toFixed(1)}°
+maxPolarAngle: ${((controls.maxPolarAngle * 180) / Math.PI).toFixed(1)}°`
     : ""
 }`;
   }
@@ -70,29 +80,42 @@ z: ${controls.target.z.toFixed(2)}`
   button.onclick = () => {
     camera.getWorldDirection(forward);
 
+    const distance = controls ? camera.position.distanceTo(controls.target) : 0;
+
     const data = {
       camera: {
         position: {
-          x: camera.position.x,
-          y: camera.position.y,
-          z: camera.position.z,
+          x: camera.position.x.toFixed(2),
+          y: camera.position.y.toFixed(2),
+          z: camera.position.z.toFixed(2),
         },
+        distanceToTarget: distance.toFixed(2),
         facing: {
-          x: forward.x,
-          y: forward.y,
-          z: forward.z,
+          x: forward.x.toFixed(2),
+          y: forward.y.toFixed(2),
+          z: forward.z.toFixed(2),
         },
       },
       ...(controls && {
         target: {
-          x: controls.target.x,
-          y: controls.target.y,
-          z: controls.target.z,
+          x: controls.target.x.toFixed(2),
+          y: controls.target.y.toFixed(2),
+          z: controls.target.z.toFixed(2),
+        },
+        limits: {
+          minDistance: controls.minDistance,
+          maxDistance: controls.maxDistance,
+          minPolarAngle_deg: ((controls.minPolarAngle * 180) / Math.PI).toFixed(
+            1
+          ),
+          maxPolarAngle_deg: ((controls.maxPolarAngle * 180) / Math.PI).toFixed(
+            1
+          ),
         },
       }),
     };
 
-    // console.log("Camera Debug Info:", data);
+    console.log("Camera Debug Info:", data);
   };
 
   return {

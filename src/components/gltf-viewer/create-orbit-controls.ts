@@ -10,12 +10,24 @@ export function createOrbitControls(camera: Camera, canvas: HTMLCanvasElement) {
 
   controls.enableZoom = true;
   controls.enablePan = true;
+  controls.enableRotate = true;
+
+  controls.minDistance = 0.5;
+  controls.maxDistance = 1.2;
+
+  controls.minPolarAngle = Math.PI / 4;
+  controls.maxPolarAngle = (Math.PI * 3) / 4;
+
+  controls.zoomSpeed = 0.8;
+  controls.rotateSpeed = 0.8;
+  controls.panSpeed = 0.8;
 
   controls.target.set(
     DEFAULT_VIEW.target.x,
     DEFAULT_VIEW.target.y,
     DEFAULT_VIEW.target.z
   );
+
   controls.update();
 
   return controls;
