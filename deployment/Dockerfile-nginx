@@ -1,5 +1,18 @@
+# --- Build stage ---
+FROM oven/bun:1 AS builder
+WORKDIR /app
+
+COPY package.json  ./
+RUN bun install
+
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN bun run build
+# produces /app/out
+
+# --- Nginx runtime ---
 FROM nginxinc/nginx-unprivileged:alpine
 RUN rm /etc/nginx/conf.d/default.conf
 COPY deployment/nginx.conf /etc/nginx/conf.d/default.conf
-COPY out/ /usr/share/nginx/html/
+COPY --from=builder /app/out /usr/share/nginx/html/
 EXPOSE 8080
