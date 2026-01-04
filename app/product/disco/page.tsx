@@ -12,6 +12,7 @@ import ProductCard from "@/src/components/products/product-card";
 
 const ProductPage = () => {
   const tabs = [
+    // ... (your existing tabs remain unchanged)
     {
       id: "details",
       label: "Detalhes",
@@ -83,7 +84,6 @@ const ProductPage = () => {
             rating={4.5}
             date="2025-12-16"
             reviewText="Produto excelente, qualidade de som muito boa e design elegante. Recomendo!"
-            // onHelpfulClick={() => alert("Marked as helpful")}
           />
         </div>
       ),
@@ -183,7 +183,7 @@ const ProductPage = () => {
           <Breadcrumbs
             items={[
               { href: "/", label: "Início" },
-              { href: "/discos", label: "Toca-Discos" },
+              { href: "/products", label: "Toca-Discos" },
               { label: "Toca-Disco Vinyl Clássico" },
             ]}
           />
@@ -198,13 +198,31 @@ const ProductPage = () => {
           {sceneLoaded && <PBRConfigurator />}
 
           <div className="mt-6">
+            <div className="mb-6">
+              <span className="font-bold text-gray-900 text-3xl">149,90 €</span>
+            </div>
+
+            <button
+              onClick={() => {
+                // Does nothing (as requested)
+              }}
+              className="bg-amber-600 hover:bg-amber-700 px-6 py-3 rounded-md w-full font-medium text-white transition duration-200"
+            >
+              Adicionar ao carrinho
+            </button>
+
+            <p className="mt-3 text-gray-600 text-sm text-center">
+              Portes grátis em compras acima de 99 €
+            </p>
+          </div>
+
+          <div className="mt-6">
             <HorizontalTabs tabs={tabs} />
           </div>
         </aside>
       </div>
 
-      {/* Related Products - Full width, below everything */}
-      {/* Related Products - Full width, below everything */}
+      {/* Related Products */}
       <section className="mt-12 pt-12 border-t">
         <h2 className="mb-6 font-semibold text-gray-900 text-2xl">
           Também pode gostar
@@ -220,7 +238,7 @@ const ProductPage = () => {
                     description: product.name,
                     title: product.name,
                     price: product.price,
-                    image: `https://picsum.photos/400/500?random=${index}`, // random images
+                    image: `https://picsum.photos/400/500?random=${index}`,
                   }}
                 />
               </div>

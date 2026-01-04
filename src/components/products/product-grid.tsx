@@ -5,13 +5,28 @@ import ProductCard from "./product-card";
 
 const PRODUCTS_PER_PAGE = 8;
 
-const products = Array.from({ length: 24 }).map((_, i) => ({
+// Your custom product (will appear first)
+const customProduct = {
+  id: 999, // choose an ID that doesn't conflict with the others
+  title: "Toca-Disco Vinyl Clássico",
+  description:
+    "Design retro com tecnologia moderna para uma experiência autêntica em vinil.",
+  image: "/renders/render1.png", // or use your own image URL
+  price: "149.90",
+  url: "/product/disco",
+};
+
+// Generate the 24 placeholder products
+const placeholderProducts = Array.from({ length: 24 }).map((_, i) => ({
   id: i + 1,
   title: `Produto ${i + 1}`,
   description: "Descrição curta do produto com informação essencial.",
   image: "https://picsum.photos/400/500?random=" + i,
   price: (29.9 + i).toFixed(2),
 }));
+
+// Combine: custom product first, then all placeholders
+const products = [customProduct, ...placeholderProducts];
 
 export default function ProductGrid() {
   const [page, setPage] = useState(1);

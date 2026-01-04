@@ -8,6 +8,7 @@ export default function ProductCard({
     description: string;
     image: string;
     price: string;
+    url?: string;
   };
 }) {
   return (
@@ -33,9 +34,12 @@ export default function ProductCard({
         <div className="flex justify-between items-center pt-2">
           <span className="font-semibold text-sm">€{product.price}</span>
 
-          <button className="hover:bg-black px-3 py-1 border font-semibold hover:text-white text-xs transition">
+          <a
+            href={product.url}
+            className="hover:bg-black px-3 py-1 border font-semibold hover:text-white text-xs transition"
+          >
             Ver mais
-          </button>
+          </a>
         </div>
       </div>
     </article>
