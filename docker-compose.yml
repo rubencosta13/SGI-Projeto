@@ -9,17 +9,8 @@ services:
     dns:
       - 1.1.1.1
     restart: always
-  sgi-nginx:
-    container_name: sgi-nginx
-    build:
-      context: .
-      dockerfile: deployment/Dockerfile-nginx
-    networks:
-      - safe_net
-    dns:
-      - 1.1.1.1
-    restart: always
-    
+  
+
 networks:
   safe_net:
     external: true
