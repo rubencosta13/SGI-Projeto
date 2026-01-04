@@ -28,6 +28,7 @@ FROM oven/bun:1 AS runner
 WORKDIR /home/app
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+ENV NODE_ENV=PRODUCTION
 
 # Copy production deps from Bun install
 COPY --from=install /home/app/node_modules ./node_modules

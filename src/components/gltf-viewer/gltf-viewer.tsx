@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Clock, Mesh, Object3D } from "three";
+import { Clock, DoubleSide, Material, Mesh, Object3D } from "three";
 import { createRenderer } from "./create-renderer";
 import { createScene } from "./create-scene";
 import { loadGLTF } from "./loadGLTF";
@@ -62,8 +62,6 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
     let animationSystem: ReturnType<typeof createAnimationSystem> | null = null;
     let interaction: ReturnType<typeof createInteraction> | null = null;
 
-    const { update } = createDebugHUD(camera, controls);
-
     const resize = () => {
       const canvas = canvasRef.current!;
       const parent = canvas.parentElement!;
@@ -89,7 +87,23 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
         scene.add(model);
         setModel(model);
 
-        // Capture original materials
+        model.traverse((child) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if ((child as any).isMesh) {
+            const mesh = child as Mesh;
+
+            if (Array.isArray(mesh.material)) {
+              mesh.material.forEach((mat) => {
+                mat.side = DoubleSide;
+                mat.needsUpdate = true;
+              });
+            } else if (mesh.material) {
+              (mesh.material as Material).side = DoubleSide;
+              (mesh.material as Material).needsUpdate = true;
+            }
+          }
+        });
+
         model.traverse((child: Object3D) => {
           if ((child as Mesh).isMesh) {
             const mesh = child as Mesh;
@@ -140,7 +154,6 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
       animationSystem?.update(delta);
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
-      update();
     };
 
     animate();
