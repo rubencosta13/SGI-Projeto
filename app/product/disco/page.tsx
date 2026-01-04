@@ -12,7 +12,6 @@ import ProductCard from "@/src/components/products/product-card";
 
 const ProductPage = () => {
   const tabs = [
-    // ... (your existing tabs remain unchanged)
     {
       id: "details",
       label: "Detalhes",
