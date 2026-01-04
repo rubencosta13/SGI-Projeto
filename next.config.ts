@@ -17,7 +17,6 @@ const nextConfig: NextConfig = {
       transform: "lodash/{{member}}",
       preventFullImport: true,
     },
-    three: { transform: "three/{{member}}" },
   },
   images: {
     remotePatterns: [
