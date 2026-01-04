@@ -4,8 +4,8 @@ WORKDIR /home/app
 
 # --- Install all dependencies (including devDependencies needed for build) ---
 FROM base AS deps
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+COPY package.json ./
+RUN bun install --no-lockfile
 
 # --- Build stage using Node 20 (required for Next.js build) ---
 FROM node:20-alpine AS builder
