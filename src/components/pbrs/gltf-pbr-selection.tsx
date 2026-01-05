@@ -14,8 +14,8 @@ export function GLTFPBRSection({ component }: Props) {
       title={component.display}
       info={
         component.physicalMaterialOnly
-          ? Object.keys(component.materials || {}).length + " Options"
-          : `${component.pbrs?.length || 0} Options`
+          ? Object.keys(component.materials || {}).length + " Opções"
+          : `${component.pbrs?.length || 0} Opções`
       }
     >
       <PBRImagePicker

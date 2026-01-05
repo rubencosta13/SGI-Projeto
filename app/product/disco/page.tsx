@@ -44,7 +44,7 @@ const ProductPage = () => {
             <div className="flex justify-between">
               <dt className="text-gray-600">Conectividade: </dt>
               <dd className="font-medium text-gray-900 text-right">
-                Bluetooth 5.0, RCA, Aux, USB
+                RCA, Aux, USB
               </dd>
             </div>
 

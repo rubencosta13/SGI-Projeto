@@ -111,23 +111,23 @@ export const DUSTCOVER_MATERIALS: Record<string, MeshPhysicalMaterial> = {
 export const COMPONENT_PBRS: ComponentPBRMapping[] = [
   {
     mesh: "DustCover",
-    display: "Dust Cover",
+    display: "Acrilico",
     materials: DUSTCOVER_MATERIALS,
     physicalMaterialOnly: true,
   },
   {
     mesh: "Base",
-    display: "Base Material",
+    display: "Base",
     pbrs: ["granite", "oak", "wood"],
   },
   {
     mesh: "BlackMattePlastic",
-    display: "Arm",
+    display: "Braço",
     pbrs: ["metal"],
   },
   {
     mesh: "Feet",
-    display: "Feet",
+    display: "Pés",
     pbrs: ["metal", "granite", "oak", "wood"],
   },
 ];
