@@ -121,7 +121,7 @@ export const COMPONENT_PBRS: ComponentPBRMapping[] = [
     pbrs: ["granite", "oak", "wood"],
   },
   {
-    mesh: "BlackMattePlastic",
+    mesh: "PickupBaseAttachment",
     display: "Braço",
     pbrs: ["metal"],
   },

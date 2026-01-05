@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Clock, DoubleSide, Material, Mesh, Object3D } from "three";
+import { Clock, DoubleSide, FrontSide, Material, Mesh, Object3D } from "three";
 import { createRenderer } from "./create-renderer";
 import { createScene } from "./create-scene";
 import { loadGLTF } from "./loadGLTF";
@@ -107,6 +107,7 @@ const GLTFViewer = ({ onLoaded }: GLTFViewerProps) => {
         model.traverse((child: Object3D) => {
           if ((child as Mesh).isMesh) {
             const mesh = child as Mesh;
+
             originalMaterials.set(
               mesh.name,
               Array.isArray(mesh.material) ? [...mesh.material] : mesh.material
